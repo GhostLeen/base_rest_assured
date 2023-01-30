@@ -1,6 +1,7 @@
 package com.denal;
 
 import com.denal.models.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -83,6 +84,19 @@ public class ReqresWithSpecAndModelTest {
         assertEquals(9, data.getData().getId());
         assertEquals("Tobias", data.getData().getFirstName());
         assertEquals("Funke", data.getData().getLastName());
+    }
+
+    @Test
+    @DisplayName("Удаление пользователя по id")
+    void deleteUserByIdTest() {
+
+        given()
+                .filter(allureWithCustomTemplates())
+                .spec(request)
+                .when()
+                .delete("/users/4")
+                .then()
+                .spec(response204);
     }
 
     @Test
