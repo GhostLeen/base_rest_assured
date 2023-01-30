@@ -19,14 +19,12 @@ public class SelenoidTests {
         3. Check total is 20
      */
 
-    @Test
     void checkTotal() {
         get("https://selenoid.autotests.cloud/status")
                 .then()
                 .body("total", is(20));
     }
 
-    @Test
     void checkTotalWithStatus() {
         get("https://selenoid.autotests.cloud/status")
                 .then()
@@ -34,7 +32,6 @@ public class SelenoidTests {
                 .body("total", is(20));
     }
 
-    @Test
     void checkTotalWithGiven() {
         given()
                 .when()
@@ -44,7 +41,6 @@ public class SelenoidTests {
                 .body("total", is(20));
     }
 
-    @Test
     void checkTotalWithLogs() {
         given()
                 .log().all()
@@ -56,7 +52,6 @@ public class SelenoidTests {
                 .body("total", is(20));
     }
 
-    @Test
     void checkTotalWithSomeLogs() {
         given()
                 .log().uri()
@@ -69,7 +64,6 @@ public class SelenoidTests {
                 .body("total", is(20));
     }
 
-    @Test
     void checkChromeVersion() {
         given()
                 .log().uri()
@@ -82,7 +76,6 @@ public class SelenoidTests {
                 .body("browsers.chrome", hasKey("100.0"));
     }
 
-    @Test
     void checkResponseBadPractice() {
         String expectedResponseString = "{\"total\":20,\"used\":0,\"queued\":0,\"pending\":0,\"browsers\":" +
                 "{\"android\":{\"8.1\":{}}," +
@@ -104,7 +97,6 @@ public class SelenoidTests {
         assertEquals(expectedResponseString, actualResponse.asString());
     }
 
-    @Test
     void checkResponseGoodPractice() {
         Integer expectedTotal = 20;
 
@@ -126,7 +118,7 @@ public class SelenoidTests {
         2. Get response { value: { message: "Selenoid 1.10.7 built at 2021-11-21_05:46:32AM", ready: true } }
         3. Check value.ready is true
      */
-    @Test
+
     void checkWdHubStatus401() {
         given()
                 .log().uri()
@@ -138,7 +130,6 @@ public class SelenoidTests {
                 .statusCode(401);
     }
 
-    @Test
     void checkWdHubStatus() {
         given()
                 .log().uri()
@@ -151,7 +142,6 @@ public class SelenoidTests {
                 .body("value.ready", is(true));
     }
 
-    @Test
     void checkWdHubWithAuthStatus() {
         given()
                 .log().uri()

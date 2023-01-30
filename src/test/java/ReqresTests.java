@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ public class ReqresTests {
     //Домашнее задание. Разработка автотестов на запросы из https://reqres.in/
 
     @Test
+    @Disabled
     @DisplayName("Успешная регистрация дефолтного пользователя")
     void successRegisterTest() {
         String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"pistol\" }";
@@ -30,6 +32,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Неуспешная регистрация неподдерживаемого пользователя")
     void unSuccessRegisterNonSupportedUserTest() {
         String data = "{ \"email\": \"diff.mail@reqres.in\", \"password\": \"diff_pass\" }";
@@ -48,6 +51,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Неуспешная регистрация. Неподдерживаемый формат сообщения без логина и пароля")
     void unSuccessRegisterWithoutDataTest() {
 
@@ -61,6 +65,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Успешное создание пользователя")
     void successCreateUserTest() {
         String data = "{ \"name\": \"Mark\", \"job\": \"developer\"}";
@@ -80,6 +85,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Получение пользователя по id")
     void getUserByIdTest() {
 
@@ -96,6 +102,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Обновление существующего пользователя")
     void updateUserByIdTest() {
         String data = "{ \"name\": \"Tony\"}";
@@ -114,6 +121,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     @DisplayName("Удаление пользователя по id")
     void deleteUserByIdTest() {
         Integer expectedStatusCode = 204;

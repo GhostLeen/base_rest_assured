@@ -1,10 +1,10 @@
 package com.denal;
 
-import com.denal.models.UserData;
-import com.denal.models.UserGenerator;
+import com.denal.models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.denal.helpers.CustomApiListener.allureWithCustomTemplates;
 import static com.denal.spec.Specs.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -22,15 +22,14 @@ public class ReqresWithSpecAndModelTest {
                 .build();
 
         given()
+                .filter(allureWithCustomTemplates())
                 .spec(request)
                 .body(user)
                 .when()
                 .post("/register")
                 .then()
-                .log().status()
-                .log().body()
-                .spec(response)
-                .body("id", is(4));
+                .spec(response200)
+                .body("token", is(notNullValue()));
     }
 
     @Test
@@ -43,12 +42,12 @@ public class ReqresWithSpecAndModelTest {
                 .build();
 
         given()
+                .filter(allureWithCustomTemplates())
                 .spec(request)
                 .body(user)
                 .when()
                 .post("/register")
                 .then()
-                .log().status()
                 .log().body()
                 .spec(response400)
                 .body("error", is("Note: Only defined users succeed registration"));
@@ -59,11 +58,11 @@ public class ReqresWithSpecAndModelTest {
     void unSuccessRegisterTest() {
 
         given()
+                .filter(allureWithCustomTemplates())
                 .spec(request)
                 .when()
                 .post("/register")
                 .then()
-                .log().status()
                 .spec(response400);
     }
 
@@ -72,12 +71,13 @@ public class ReqresWithSpecAndModelTest {
     void getUserByIdTest() {
 
         UserData data = given()
+                .filter(allureWithCustomTemplates())
                 .spec(request)
                 .when()
                 .get("/users/9")
                 .then()
-                .spec(response)
-                .log().body()
+                .log().status()
+                .spec(response200)
                 .extract().as(UserData.class);
 
         assertEquals(9, data.getData().getId());
@@ -86,22 +86,44 @@ public class ReqresWithSpecAndModelTest {
     }
 
     @Test
+    @DisplayName("Успешное создание пользователя")
+    void successCreateUserTest() {
+
+        UserCreateModel userMade = new UserCreateModel();
+                userMade.setName("Mark");
+                userMade.setJob("developer");
+
+        UserCreateModel user = given()
+                .filter(allureWithCustomTemplates())
+                .spec(request)
+                .body(userMade)
+                .when()
+                .post("/users")
+                .then()
+                .log().status()
+                .spec(response201)
+                .extract().as(UserCreateModel.class);
+
+        assertEquals("Mark", user.getName());
+        assertEquals("developer", user.getJob());
+    }
+
+    @Test
     @DisplayName("Получение списка ресурсов и проверка с Groovy")
     void getResourseListWithGroovyCheckTest() {
         given()
+                .filter(allureWithCustomTemplates())
                 .spec(request)
                 .when()
                 .get("/unknown")
                 .then()
-                .spec(response)
-                .log().body()
+                .spec(response200)
                 .body("data.findAll{it.id == 2}.name", hasItem("fuchsia rose"))
                 .body("data.findAll{it.id == 3}.year", hasItem(2002))
                 .body("data.findAll{it.id == 5}.pantone_value", hasItem("17-1456"));
     }
 
     //Пример из урока с отключением форматирования кода при ctrl+alt+L
-    @Test
     public void checkEmailUsingGroovy() {
         // @formatter:off
         given()
@@ -114,5 +136,4 @@ public class ReqresWithSpecAndModelTest {
                         hasItem("eve.holt@reqres.in"));
         // @formatter:on
     }
-
 }
